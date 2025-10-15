@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        // //Metodo 1
+        // document.querySelector("#app").innerHTML = `<img src="cards/10_of_clubs.png" alt="cards">`;
+
+        // //Metodo 2
+        // const carta = document.createElement("IMG");
+        // carta.src = 'cards/10_of_clubs.png';
+        // carta.alt = 'carta 2'; 
+        // document.querySelector('#app').appendChild(carta);
+
+        function Carta(numero, palo) {
+            this.numero = numero;
+            this.palo = palo;
+        }
+
+        function initCartas() {
+            let cartas = [];
+            let numeros = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'As'];
+            let palos = ['corazon', 'pica', 'diamante', 'trevol'];
+
+            for (const palo of palos) {
+                for (const numero of numeros) {
+                    cartas.push(new Carta(numero, palo));
+                }
+            }
+
+            // cartas.push(new Carta('joker', 'rojo'));
+            // cartas.push(new Carta('joker', 'negro'));
+
+            return cartas;
+        }
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function mix(cartas) {
+            const mano = [];
+
+            if (!cartas || cartas.length < 5) {
+                console.error("No hay cartas");
+                return;
+            }
+
+            for (let i = 0; i < 5; i++) {
+                let cartaRandom = random(0, cartas.length - 1);
+                while (mano.includes(cartas[cartaRandom])) {
+                    cartaRandom = random(0, cartas.length - 1);
+                }
+                mano.push(cartas[cartaRandom]);
+            }
+
+            return mano;
+        }
+
+        // console.log(mix(initCartas()));
+
+        function comprobarParejas(cartas) {
+            const cartaCheck = []
+            for (let i = 0; i < cartas.length; i++) {
+                if (cartaCheck.includes(cartas[i].numero)) {
+                    return true;
+                }
+                cartaCheck.push(cartas[i].numero);
+            }
+            return false;
+        }
+
+        function jugar(mazo) {
+            const mano = mix(mazo);
+            let esPareja = comprobarParejas(mano);
+            pintarJuego(mano, esPareja, mazo);
+        }
+
+        function esGanador(cartas){
+            return comprobarParejas(cartas) ? "has ganado" : "has perdido";
+        }
+
+        //Vista
+        function urlCarta(carta) {
+            let url = "";
+
+            switch (carta.numero) {
+                case 'J':
+                    url += 'jack';
+                    break;
+                case 'Q':
+                    url += 'queen';
+                    break;
+                case 'K':
+                    url += 'king';
+                    break;
+                case 'As':
+                    url += 'ace';
+                    break;
+                default:
+                    url += carta.numero;
+            }
+
+            url += '_of_'
+
+            switch (carta.palo) {
+                case 'diamante':
+                    url += 'diamonds';
+                    break;
+                case 'trevol':
+                    url += 'clubs';
+                    break;
+                case 'corazon':
+                    url += 'hearts';
+                    break;
+                case 'pica':
+                    url += 'spades';
+                    break;
+            }
+
+            url += '.png';
+
+            return url;
+        }
+
+        function pintarJuego(cartas, esGanador, mazo) {
+            const app = document.querySelector("#app");
+            app.innerHTML = '';
+
+            //boton de juego
+            const botonJuego = document.createElement('BUTTON');
+            botonJuego.innerText = 'Jugar';
+            botonJuego.addEventListener('click', function () { jugar(mazo); });
+            app.appendChild(botonJuego);
+
+            //Cartas
+            for (const carta of cartas) {
+                const cartaElemento = document.createElement('IMG');
+                cartaElemento.src = `./cards/${urlCarta(carta)}`;
+                cartaElemento.alt = `${carta.numero} de ${carta.palo}`;
+                app.appendChild(cartaElemento);
+            }
+
+            //Resultado
+            const resultado = document.createElement('P');
+            resultado.innerHTML = esGanador ? 'Has ganado' : 'Has perdido'; 
+            app.appendChild(resultado);
+        }
+
+        function init() {
+            const mazo = initCartas();
+            jugar(mazo);
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        //servicios
+        function startCrono(){
+            const now = new Date();
+            const cronoInterval = setInterval(function(){
+                const currenntTime = new Date();
+                const diffTime = currenntTime - now;// es en segundos
+                console.log('Current', diffTime);
+
+                //Pintar cronometro
+                pintarCronometro(diffTime);
+            
+            },50);
+            return cronoInterval;
+        }
+
+        function resetCrono(cronoInterval){
+            clearInterval(cronoInterval);
+            pintarCronometro(0);
+        }
+
+        //vista
+        function pintarCronometro(ms) {
+            const segundo = Math.floor(ms / 1000);
+            const milis = ms % 1000;
+
+            document.querySelector("#crono").innerHTML= `00:${segundo}s:${milis}ms`;
+        }
+
+        function pintarScreen() {
+            const app = document.querySelector("#app");
+            const crono = document.createElement('P');
+            crono.id = "crono";
+
+            const startBn = document.createElement("BUTTON");
+            startBn.innerText = "START";
+            startBn.addEventListener('click',setTimeout(startCrono()));
+
+            const pauseBn = document.createElement("BUTTON");
+            pauseBn.innerText = "PAUSE";
+
+            const resetBn = document.createElement("BUTTON");
+            resetBn.innerText = "RESET";
+            resetBn.addEventListener('click',resetCrono);
+
+            app.appendChild(crono);
+            app.appendChild(startBn);
+            app.appendChild(pauseBn);
+            app.appendChild(resetBn);
+        }
+
+        //Init
+        function init() {
+
+            pintarScreen();
+        }
+
+        init();
+
+        /* function init() {
+ 
+             const app = document.querySelector("#app");
+             const input = document.createElement('INPUT');
+             input.id = 'box';
+             input.type = 'number';
+             input.addEventListener('input', function () {
+                 document.querySelector("#countdown").innerHTML = this.value;
+             })
+             app.appendChild(input);
+ 
+             const buttonGo = document.createElement("BUTTON");
+             buttonGo.innerText = "Go!";
+             buttonGo.addEventListener('click', countdown);
+             app.appendChild(buttonGo);
+ 
+             const div = document.createElement('DIV');
+             div.id = 'countdown';
+             div.style.textAlign = 'center';
+             app.appendChild(div);
+ 
+             const result = document.createElement("P");
+             app.appendChild(result);
+ 
+ 
+             // let hora = parseInt(document.getElementById('hora').value) || 0;
+             // let minuto = parseInt(document.getElementById('minuto').value) || 0;
+             // let segundo = parseInt(document.getElementById('segundo').value) || 0;
+ 
+ 
+             function addZero(i) {
+                 if (i < 10) { i = "0" + i }
+                 return i;
+             }
+ 
+             let now = new Date();
+ 
+             //let endTime = addZero(now.getTime() + (hora * 3600 + minuto * 60 + segundo) * 1000);
+ 
+ 
+ 
+             function countdown() {
+                 let currenntTime = new Date();
+                 let h = addZero(currenntTime.getHours());
+                 let m = addZero(currenntTime.getMinutes());
+                 let s = addZero(currenntTime.getSeconds());
+                 let time = h + ":" + m + ":" + s;
+                 document.getElementById('box').innerHTML = time;
+                 let numero = parseInt(document.querySelector("#box").value);
+ 
+                 clearInterval(intervalo = setInterval(function () {
+                     if (numero > 0) {
+                         document.querySelector("#box").innerHTML = numero + timeDiff.getSeconds();
+                     }
+                 }, 1000))
+ 
+ 
+ 
+             }
+ 
+ 
+ 
+         }
+ 
+         init();
+ */
+    </script>
+</body>
+
+</html>

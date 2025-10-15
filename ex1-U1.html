@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p id="cancion"></p>
+    <script>
+
+        let cancion = "Una mosca volava per la llum, llum, llum, i la llum es va apaga, es va apaga, i la pobra mosca, va queda a les fosques, i la pobre mosca no va pode vola, vola, vola"
+        const vocales = ["a", "e", "i", "o", "u"];
+        cancion= cancion.toLowerCase();
+
+        
+        let cancionCMB;
+
+            for (let i = 0; i < cancion.length; i++){
+                for (let j = 0; j < vocales.length; j++) {
+                    if(vocales.includes(cancion[i])){
+                        cancionCMB= cancion.join(i,vocales[j])
+                    }
+                }
+            }
+
+        document.getElementById("cancion").innerHTML = cancionCMB;
+    </script>
+</body>
+
+</html>

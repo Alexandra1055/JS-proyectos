@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Hola</p>
+    <script>
+        function suma(a, b){
+            return a+b;
+        }
+        function resta(a, b){
+            return a-b;
+        }
+        function multiplicacion(a, b){
+            return a*b;
+        }
+        function division(a, b){
+            return a/b;
+        }
+
+        function quadradoOperacion(fun,a,b){
+            const r = fun(a, b)*fun(a, b);
+            console.log(r)
+        }
+        quadradoOperacion(suma,2,3);
+        quadradoOperacion(resta,2,3);
+        quadradoOperacion(multiplicacion,2,3);
+        quadradoOperacion(division,2,3);
+
+
+        function funcionTimeout(){
+            quadradoOperacion(suma,2,3);
+        }
+        setTimeout(funcionTimeout,3000)
+        document.querySelector("p").addEventListener('click', funcionTimeout);
+    </script>
+</body>
+</html>

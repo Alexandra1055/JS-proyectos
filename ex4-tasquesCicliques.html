@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        // function repartirTareas(personas, tareas, semanas) {
+
+        //     for (let s = 1; s <= semanas; s++) {
+        //         console.log(`Semana ${s} `);
+        //         for (let t = 0; t < tareas.length; t++) {
+        //             for (let p = 0; p < personas.length; p++) {
+        //                 const circular = (p + s) % tareas.length;
+        //                 if (t === circular) {
+        //                     console.log(`${personas[p]} ${tareas[t]}`);
+        //                 }
+        //             }
+        //         }
+        //     }
+
+        // }
+
+        // let personas = ["pare", "mare", "fill", "filla"];
+        // let tareas = ["posar rentadora", "fer la cuina", "bany net"];
+        // let semanas = 12;
+
+        // repartirTareas(personas, tareas, semanas);
+
+        function repartirTareas(personas, tareas, semanas) {
+
+            for (let s = 1; s <= semanas; s++) {
+                console.log(`Semana ${s} `);
+                const circular = (personas.length + semanas.length) % tareas.length;
+                if (tareas.length === circular) {
+                    for(let i = 0; i < personas.length; i++)
+                    console.log(`${personas[i]} ${tareas[i]}`);
+                }
+            }
+
+
+        }
+
+        let personas = ["pare", "mare", "fill", "filla"];
+        let tareas = ["posar rentadora", "fer la cuina", "bany net"];
+        let semanas = 12;
+
+        repartirTareas(personas, tareas, semanas);
+
+    </script>
+
+</body>
+
+</html>
