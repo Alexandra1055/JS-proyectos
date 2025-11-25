@@ -11,11 +11,20 @@
     <div id="app"></div>
     <script>
         //servicios
+
+        let cronoInterval = null;
+        let tiempoPausado = 0;
+        let diffTime = null;
+
         function startCrono(){
             const now = new Date();
-            const cronoInterval = setInterval(function(){
+            cronoInterval = setInterval(function(){
                 const currenntTime = new Date();
-                const diffTime = currenntTime - now;// es en segundos
+                if (tiempoPausado === 0){
+                    diffTime = currenntTime - now;
+                } else {
+                    diffTime = (currenntTime - now) + tiempoPausado;
+                }
                 console.log('Current', diffTime);
 
                 //Pintar cronometro
@@ -25,9 +34,15 @@
             return cronoInterval;
         }
 
-        function resetCrono(cronoInterval){
+        function resetCrono(){
             clearInterval(cronoInterval);
             pintarCronometro(0);
+            tiempoPausado = 0;
+        }
+
+        function pausarCrono(){
+            clearInterval(cronoInterval)
+            tiempoPausado = diffTime;
         }
 
         //vista
@@ -45,10 +60,11 @@
 
             const startBn = document.createElement("BUTTON");
             startBn.innerText = "START";
-            startBn.addEventListener('click',setTimeout(startCrono()));
+            startBn.addEventListener('click',startCrono);
 
             const pauseBn = document.createElement("BUTTON");
             pauseBn.innerText = "PAUSE";
+            pauseBn.addEventListener('click',pausarCrono)
 
             const resetBn = document.createElement("BUTTON");
             resetBn.innerText = "RESET";

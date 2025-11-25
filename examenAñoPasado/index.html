@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        //MODEL
+        const OPCIONES = ['piedra', 'papel', 'tijeras'];
+        //SERVEIS
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        //0 = impatar || 1 = ganar || -1 = perder
+        function play(player, machine) {
+            if (player === machine) {
+                return 0;
+            } else if (
+                (player === 'piedra' && machine === 'tijeras') ||
+                (player === 'papel' && machine === 'piedra') ||
+                (player === 'tijeras' && machine === 'papel')
+            ) {
+                return 1;
+            }
+
+            return -1;
+        }
+
+        //VISTA
+        function askPlayer() {
+            let isValid = false;
+            let choice;
+            while (!isValid) {
+                choice = prompt("Elije: Piedra / Papel / Tijeras");
+
+                if (!OPCIONES.includes(choice.toLowerCase())) {
+                    alert(("Has de elegir una opcion valida"))
+                } else {
+                    isValid = true;
+                }
+
+                return choice.toLowerCase();
+            }
+
+            console.log(choice);
+
+        }
+
+
+        function askMachine() {
+            const randomNm = random(0, OPCIONES.length - 1);
+            return OPCIONES[randomNm];
+        }
+
+        function paintHand(hand){
+            let img;
+            if(hand==='piedra'){
+                img = 'hand0.png'
+            }else if(hand==='tijeras'){
+                img = 'hand2.png'
+            } else{
+                img = 'hand5.png'
+            }
+            return img;
+        }
+
+        
+        function paintResult(player, machine, result) {
+            console.log(player, machine, result);
+
+            const app = document.querySelector("#app");
+            const imgPlayer = document.createElement('IMG');
+            imgPlayer.src = './imagenes/'+paintHand(player);
+            imgPlayer.style.width='300px';
+
+             const imgMachine = document.createElement('IMG');
+            imgMachine.src = './imagenes/'+paintHand(machine);
+            imgMachine.style.width='300px';
+
+            app.appendChild(imgPlayer);
+            app.appendChild(imgMachine);
+        }
+
+        function pestanaAyuda(){
+            const app = document.querySelector("#app");
+            const button = document.createElement("button");
+
+            button.textContent="Ayuda";
+            button.addEventListener("click", () => {
+                window.open("https://mitzori.com", "ayuda", "width=600,height=500");
+            });
+
+            app.appendChild(button);
+        }
+
+
+        
+
+        //INIT
+        function init() {
+            const player = askPlayer();
+            const machine = askMachine();
+            const game = play(player, machine);
+            paintResult(player, machine, game);
+            pestanaAyuda();
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
