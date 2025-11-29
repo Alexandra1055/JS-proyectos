@@ -12,6 +12,11 @@
     <script>
         //MODEL
         const OPCIONES = ['piedra', 'papel', 'tijeras'];
+        let escritura;
+
+        let marcadorJugador = 0;
+        let marcadorMaquina = 0;
+        const historial = [];
         //SERVEIS
         function random(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -32,10 +37,32 @@
             return -1;
         }
 
+        function actualizarRanking(player, machine, result) {
+            if (result === 1) {
+                marcadorJugador++;
+            } else if (result === -1) {
+                marcadorMaquina++;
+            }
+
+            let estado;
+            if (result === 1) estado = "Jugador gana";
+            else if (result === -1) estado = "Máquina gana";
+            else estado = "Empate";
+
+            historial.push({
+                jugador: player,
+                maquina: machine,
+                resultado: estado
+            });
+
+            pintarRanking();
+        }
+
         //VISTA
         function askPlayer() {
             let isValid = false;
             let choice;
+
             while (!isValid) {
                 choice = prompt("Elije: Piedra / Papel / Tijeras");
 
@@ -47,8 +74,18 @@
 
                 return choice.toLowerCase();
             }
-
             console.log(choice);
+
+        }
+
+        function selecTeclado(tecla) {
+            let choice;
+
+            if (tecla === 'r') choice = 'piedra';
+            else if (tecla === 'p') choice = 'papel';
+            else if (tecla === 's') choice = 'tijeras';
+
+            return choice;
 
         }
 
@@ -58,58 +95,192 @@
             return OPCIONES[randomNm];
         }
 
-        function paintHand(hand){
+        function paintHand(hand) {
             let img;
-            if(hand==='piedra'){
+            if (hand === 'piedra') {
                 img = 'hand0.png'
-            }else if(hand==='tijeras'){
+            } else if (hand === 'tijeras') {
                 img = 'hand2.png'
-            } else{
+            } else {
                 img = 'hand5.png'
             }
             return img;
         }
 
-        
+
         function paintResult(player, machine, result) {
             console.log(player, machine, result);
 
             const app = document.querySelector("#app");
             const imgPlayer = document.createElement('IMG');
-            imgPlayer.src = './imagenes/'+paintHand(player);
-            imgPlayer.style.width='300px';
+            imgPlayer.src = './imagenes/' + paintHand(player);
+            imgPlayer.style.width = '300px';
 
-             const imgMachine = document.createElement('IMG');
-            imgMachine.src = './imagenes/'+paintHand(machine);
-            imgMachine.style.width='300px';
+            const imgMachine = document.createElement('IMG');
+            imgMachine.src = './imagenes/' + paintHand(machine);
+            imgMachine.style.width = '300px';
 
             app.appendChild(imgPlayer);
             app.appendChild(imgMachine);
         }
 
-        function pestanaAyuda(){
+        function pintarRanking() {
+            let panel = document.querySelector("#ranking");
+
+            if (!panel) {
+                panel = document.createElement("div");
+                panel.id = "ranking";
+                panel.style.border = "1px solid #000";
+                panel.style.padding = "10px";
+                panel.style.marginTop = "20px";
+                panel.style.maxWidth = "300px";
+                document.querySelector("#app").appendChild(panel);
+            }
+
+            let html = "";
+            html += "<h4>Marcador</h4>";
+            html += "<p>Jugador: " + marcadorJugador + "</p>";
+            html += "<p>Máquina: " + marcadorMaquina + "</p>";
+
+            html += "<h4>Historial (últimas rondas)</h4>";
+
+            const ultimas = historial.slice(-5).reverse();
+            html += "<ol>";
+            for (const ronda of ultimas) {
+                html += "<li>";
+                html += "J: " + ronda.jugador +
+                    " | M: " + ronda.maquina +
+                    " → " + ronda.resultado;
+                html += "</li>";
+            }
+            html += "</ol>";
+
+            panel.innerHTML = html;
+        }
+
+        function paintResult(player, machine, result) {
+            console.log(player, machine, result);
+
             const app = document.querySelector("#app");
-            const button = document.createElement("button");
 
-            button.textContent="Ayuda";
-            button.addEventListener("click", () => {
-                window.open("https://mitzori.com", "ayuda", "width=600,height=500");
-            });
+            const imgPlayer = document.createElement('IMG');
+            imgPlayer.src = './imagenes/' + paintHand(player);
+            imgPlayer.style.width = '150px';
+            imgPlayer.alt = player;
 
-            app.appendChild(button);
+            const imgMachine = document.createElement('IMG');
+            imgMachine.src = './imagenes/' + paintHand(machine);
+            imgMachine.style.width = '150px';
+            imgMachine.alt = machine;
+
+            const texto = document.createElement("p");
+            if (result === 1) texto.textContent = "Has ganado";
+            else if (result === 0) texto.textContent = "Empate";
+            else texto.textContent = "Has perdido";
+
+            app.appendChild(imgPlayer);
+            app.appendChild(imgMachine);
+            app.appendChild(texto);
+
+            actualizarRanking(player, machine, result);
         }
 
 
-        
+        function pestanaAyuda() {
+            const app = document.querySelector("#app");
+            const buttonHelpOp = document.createElement("button");
+            const buttonHelpCl = document.createElement("button");
+            const buttonPolitecnic = document.createElement("button");
+            const reiniciar = document.createElement("button");
+            let ventana;
+
+            buttonHelpOp.textContent = "Ayuda";
+            buttonHelpCl.textContent = "Cerrar";
+            buttonPolitecnic.textContent = "Info";
+            reiniciar.textContent = "Reset";
+
+            buttonHelpOp.addEventListener("click", () => {
+                ventana = window.open("https://formacioncontinua.ufm.edu/tecnica/piedra-papel-tijera/", "ayuda", "width=600,height=500");
+            });
+            buttonHelpCl.addEventListener("click", () => {
+                ventana.close();
+            });
+
+            buttonPolitecnic.addEventListener("click", () => {
+                ventana = window.open("https://www.politecnicllevant.cat/", "Info", "width=600,height=500");
+            });
+
+            reiniciar.addEventListener("click", resetJuego);
+
+            app.appendChild(buttonHelpOp);
+            app.appendChild(buttonHelpCl);
+            app.appendChild(buttonPolitecnic);
+            app.appendChild(reiniciar);
+        }
+
+        function modoJuego() {
+            const app = document.querySelector("#app");
+            const prompt = document.createElement("button");
+            const teclado = document.createElement("button");
+            const modoTitulo = document.createElement("h3");
+            const espacio = document.createElement("div")
+
+            prompt.textContent = "Prompt";
+            teclado.textContent = "Teclado";
+            modoTitulo.textContent = "Elige el modo de juego: ";
+
+            let elegido = "";
+            const maquina = askMachine();
+            let jugar = "";
+
+
+            prompt.addEventListener("click", () => {
+                elegido = askPlayer();
+                jugar = play(elegido, maquina);
+                paintResult(elegido, maquina, jugar);
+            })
+
+            teclado.addEventListener("click", () => {
+                function onKeyPress(e) {
+                    const elegido = selecTeclado(e.key.toLowerCase());
+                    if (!elegido) {
+                        return;
+                    }
+
+                    const maquina = askMachine();
+                    const jugar = play(elegido, maquina);
+                    paintResult(elegido, maquina, jugar);
+
+                    document.removeEventListener("keydown", onKeyPress);
+                }
+
+                document.addEventListener("keydown", onKeyPress);
+                alert("Pulsa R (piedra), P (papel) o S (tijeras)");
+            })
+
+            app.appendChild(modoTitulo);
+            app.appendChild(prompt);
+            app.appendChild(teclado);
+            app.appendChild(espacio);
+
+            pintarRanking();
+
+        }
+
 
         //INIT
         function init() {
-            const player = askPlayer();
-            const machine = askMachine();
-            const game = play(player, machine);
-            paintResult(player, machine, game);
             pestanaAyuda();
+            modoJuego();
+
         }
+
+        function resetJuego() {
+            const app = document.querySelector("#app");
+            app.innerHTML = "";
+            init();
+        }
+
 
         init();
     </script>

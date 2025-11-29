@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <title>Examen Javascript</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/tv.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="title">
+        <h1>Examen Vanilla JS</h1>
+    </div>
+    <div id="timer">5</div>
+    <div id="screen">
+        <img src="img/tv.png" alt="tv" id="tv">
+        <video autoplay loop id="program">
+            <source src="videos/alldayfilms.webm" type="video/webm" id="program-source">
+        </video>
+    </div>
+    <div id="cabinet">
+        <img src="img/tvcabinet.png" alt="cabinet" id="tvcabinet">
+
+        <div id="remote">
+            <button id="anterior" class="button">&lt;&lt;</button>
+            <button id="play" class="button">Play</button>
+            <button id="stop" class="button">Stop</button>
+            <button id="seguent" class="button">&gt;&gt;</button>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        /* EXAMEN JS - ESCRIVIU AQUÍ LA VOSTRA SOLUCIÓ */
+
+        //MODEL
+        const CANALES = ["alldayfilms", "kidstv", "natureplus", "sportstv", "technologytoday", "xtremsports"];
+
+        //VISTA
+        function cambiarCanal() {
+
+        }
+
+
+
+        function botones() {
+
+            let programaActual = document.querySelector("#program");
+            const btnPlay = document.querySelector("#play");
+            const btnStop = document.querySelector("#stop");
+
+            const btnAnt = document.querySelector("#anterior");
+            const btnSig = document.querySelector("#seguent");
+
+            let tiempo = document.querySelector("#timer");
+            const input = document.createElement('INPUT');
+            input.type = 'number';
+            input.addEventListener('input', function () {
+                document.querySelector("p").innerHTML.input.value;
+            })
+
+            btnPlay.addEventListener('click', () => {
+                const countdown = setInterval(function () {
+                    let valor;
+                    tiempo.
+                        valor--;
+
+                    if (valor === 0) {
+                        clearInterval(countdown);
+
+                    }
+
+                    programaActual.play();
+                }, 5000);
+            });
+
+            btnStop.addEventListener('click', () => {
+                programaActual.pause();
+            });
+
+            btnSig.addEventListener('click', () => {
+
+
+            });
+        }
+
+
+        function botonVentana() {
+            const btnVentan = document.createElement("BUTTON");
+            const btnVentCerrar = document.createElement("BUTTON");
+
+            btnVentan.textContent = "Pagar";
+            btnVentCerrar.textContent = "Cerrar";
+
+            btnVentan.className = "button";
+            btnVentCerrar.className = "button";
+
+            const mando = document.querySelector("#remote");
+
+            let ventana;
+            btnVentan.addEventListener('click', () => { ventana = window.open('https://paypal.com', '_blank', 'width=600px, height=400px') })
+
+
+            btnVentCerrar.addEventListener('click', () => { ventana.close() });
+            const mainSl = document.querySelector("main");
+
+            mando.appendChild(btnVentan);
+            mando.appendChild(btnVentCerrar);
+        }
+
+
+        //SERVEIS
+
+        function completo() {
+            const vidAhora = document.querySelector("#program-source");
+            let canalCompl;
+            for (i = 0; i < CANALES.length; i++) {
+                canalCompl = `videos/${CANALES[i]}.webn`;
+
+            }
+            return canalCompl;
+        }
+
+        function tiempo() {
+
+        }
+
+        //INIT
+        function init() {
+            botones();
+            botonVentana();
+        }
+        init();
+
+    </script>
+</body>
+
+</html>

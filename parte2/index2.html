@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Colors Api</title>
+    <style>
+        #rectangle {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div id="app"></div>
+<div id="rectangle"></div>
+<script>
+
+    const min = 5;
+    const max = 20;
+    const url = "https://theteacher.codiblau.com/public/exercicis/other/color?min=" + min + "&max=" + max;
+
+    function colors(){
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.open("GET", url, true);
+
+        xhr.onload = function () {
+
+            const data = JSON.parse(xhr.responseText);
+            const bg = "#" + data.background;
+            const col = "#" + data.color;
+            const body = document.querySelector("body");
+            body.style.backgroundColor = bg;
+
+            const rect = document.querySelector("#rectangle");
+            rect.style.backgroundColor = col;
+            rect.style.width = data.width + "px";
+            rect.style.height = data.height + "px";
+        };
+
+        xhr.send();
+    }
+    const app = document.querySelector("#app");
+    const boton = document.createElement("button");
+    boton.innerHTML="coloreame";
+    boton.addEventListener('click',colors);
+    app.appendChild(boton);
+
+    colors();
+</script>
+</body>
+</html>

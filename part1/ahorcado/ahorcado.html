@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahorcado</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    const IMAGENES = ["img/1.png", "img/2.png", "img/3.png", "img/4.png", "img/5.png", "img/6.png", "img/7.png"];
+
+    const PALABRAS = ["CIUDAD", "FAMILIA", "AMIGO", "AMIGA", "AMOR", "SALUD", "DINERO", "PROBLEMA", "SOLUCION", "PREGUNTA", "RESPUESTA", "HISTORIA", "LUGAR", "MUSICA", "PELICULA", "LIBRO", "ESCUELA", "UNIVERSIDAD", "COCHE", "ORDENADOR", "TELEFONO", "INTERNET", "PERRO", "GATO", "ARBOL", "AGUA", "FUEGO", "TIERRA", "AIRE", "COMIDA", "BEBIDA", "PAN", "LECHE", "QUESO", "HUEVO", "FRUTA", "VERDURA", "PLAYA", "MONTANA", "RIO", "MAR", "SOL", "LUNA", "ESTRELLA", "CALLE", "PLAZA", "BARRIO", "PUEBLO", "CAMPO", "CARRETERA", "TRAFICO", "AVION", "TREN", "BARCO", "AUTOBUS", "BICICLETA", "MAQUINA", "HERRAMIENTA", "PROYECTO", "EMPRESA", "NEGOCIO", "CLIENTE", "USUARIO", "SERVICIO", "PRODUCTO", "SISTEMA", "DATO", "DATOS",
+        "GRANDE", "PEQUENO", "NUEVO", "VIEJO", "BUENO", "MALO", "BONITO", "FEO", "FACIL", "DIFICIL", "RAPIDO", "LENTO", "FRIO", "CALIENTE", "ALTO", "BAJO", "LARGO", "CORTO", "CLARO", "OSCURO", "CARO", "BARATO", "FELIZ", "TRISTE", "FUERTE", "DEBIL", "LIBRE", "OCUPADO", "TRANQUILO", "NERVIOSO", "INTERESANTE", "IMPORTANTE", "PUBLICO", "PRIVADO", "GENERAL", "ESPECIAL", "CORRECTO", "INCORRECTO", "POSIBLE", "IMPOSIBLE", "REAL", "FALSO", "UTIL", "INUTIL",
+        "ROJO", "AZUL", "VERDE", "AMARILLO", "NEGRO", "BLANCO", "GRIS", "NARANJA", "MORADO", "ROSA", "MARRON", "TURQUESA", "VIOLETA",
+        "LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"];
+
+    const ABECEDARIO = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
+    function elegirPalabra() {
+        const i = Math.floor(Math.random() * PALABRAS.length);
+        return PALABRAS[i];
+    }
+    function esLetra(letra) {
+        for (let i = 0; i < ABECEDARIO.length; i++) {
+            if (ABECEDARIO[i] === letra) return true;
+        }
+        return false;
+    }
+
+    function iniciar() {
+        const raiz = document.createElement("div");
+
+        const titulo = document.createElement("h1");
+        titulo.textContent = "Juego del Ahorcado";
+        raiz.appendChild(titulo);
+
+        const contBoton = document.createElement("div");
+        const botonNueva = document.createElement("button");
+        botonNueva.textContent = "Nueva partida";
+        contBoton.appendChild(botonNueva);
+        raiz.appendChild(contBoton);
+
+        const contImagen = document.createElement("div");
+        const imagenAhorcado = document.createElement("img");
+        imagenAhorcado.alt = "";
+        contImagen.appendChild(imagenAhorcado);
+        raiz.appendChild(contImagen);
+
+        const parrafoPalabra = document.createElement("p");
+        raiz.appendChild(parrafoPalabra);
+
+        const contenedorTeclado = document.createElement("div");
+        for (let i = 0; i < ABECEDARIO.length; i++) {
+            const letra = ABECEDARIO[i];
+            const b = document.createElement("button");
+            b.textContent = letra;
+            b.addEventListener("click", () => intentarLetra(letra, b));
+            contenedorTeclado.appendChild(b);
+        }
+        raiz.appendChild(contenedorTeclado);
+
+        const parrafoMensaje = document.createElement("p");
+        raiz.appendChild(parrafoMensaje);
+
+        document.body.appendChild(raiz);
+
+        let palabraSecreta = "";
+        let letrasReveladas = [];
+        let errores = 0;
+        let erroresMax = Math.max(0, IMAGENES.length - 1);
+        let letrasUsadas = new Map();
+
+        function actualizarImagen() {
+            const indice = Math.min(errores, erroresMax);
+            if (IMAGENES.length) {
+                imagenAhorcado.src = IMAGENES[indice];
+            }
+        }
+
+        function actualizarPalabra() {
+            parrafoPalabra.textContent = letrasReveladas.join(" ");
+        }
+
+        function mostrarMensaje(texto) {
+            parrafoMensaje.textContent = texto || "";
+        }
+
+        function reiniciar() {
+            palabraSecreta = elegirPalabra();
+            letrasReveladas = Array.from(palabraSecreta, ch => (ch === " " ? " " : "_"));
+            errores = 0;
+            erroresMax = Math.max(0, IMAGENES.length - 1);
+            letrasUsadas = new Map();
+
+            const botones = contenedorTeclado.querySelectorAll("button");
+            for (let i = 0; i < botones.length; i++) {
+                const letra = ABECEDARIO[i];
+                botones[i].textContent = letra;
+            }
+
+            mostrarMensaje("");
+            actualizarImagen();
+            actualizarPalabra();
+        }
+
+        function intentarLetra(letra, boton) {
+            if (!esLetra(letra)) return;
+            if (letrasUsadas.has(letra)) {
+                return;
+            }
+            letrasUsadas.set(letra, true);
+
+            let acierto = false;
+            for (let i = 0; i < palabraSecreta.length; i++) {
+                if (palabraSecreta[i] === letra) {
+                    letrasReveladas[i] = letra;
+                    acierto = true;
+                }
+            }
+
+            if (acierto) {
+                boton.textContent = letra;
+                boton.style.backgroundColor = "#2e7d32";
+                boton.style.color = "#fff";
+            } else {
+                boton.textContent = letra;
+                boton.style.backgroundColor = "#c62828";
+                boton.style.color = "#fff";
+                errores++;
+                actualizarImagen();
+            }
+
+            actualizarPalabra();
+
+            const haGanado = letrasReveladas.join("") === palabraSecreta;
+            const haPerdido = errores >= erroresMax;
+
+            if (haGanado) {
+                mostrarMensaje("Has ganado");
+            } else if (haPerdido) {
+                if (IMAGENES.length) imagenAhorcado.src = IMAGENES[erroresMax];
+                mostrarMensaje("Has perdido. La palabra era: " + palabraSecreta);
+            }
+        }
+
+        botonNueva.addEventListener("click", reiniciar);
+
+        reiniciar();
+    }
+    iniciar();
+</script>
+
+</html>

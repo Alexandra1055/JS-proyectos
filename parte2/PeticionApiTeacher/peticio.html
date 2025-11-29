@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+
+    </div>
+
+    <script>
+        //si usamos await init(); debemos poner en el script -> <script type="module" async>
+
+
+        /*
+        //Pero esto esta mal, porque no imprimere ordenado, ya que la primera tiene una espera de 5 seg.
+        for (let i = 0; i < 10; i++) {
+            fetch(`https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num=(i+1)`)
+            .then(x=> x.text())
+            .then(x =>{
+                document.querySelector('#app').innerHTML += '<p>' + x + '</p>'
+            })
+        }
+
+        //sino tendria que escribir que se imprima uno por uno
+        */
+
+        //PROMISE ALL : Lo que hacees recibir una array de promesas
+        //Promise.all()
+
+        // const promises = [];
+        // for (let i = 0; i <= 10; i++) {
+        //     const promise = fetch(`https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num= + (i + 1)`)
+        //         .then(x => x.text())
+        //     promises.push(promise);
+        // }
+
+        // Promise.all(promises)
+        //     .then(resultsText => {
+        //         for (const r of resultsText) {
+        //             document.querySelector('#app').innerHTML += '<p>' + r + '</p>'
+        //         }
+        //     })
+
+        // function asincrona1() {
+        //     fetch("https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num=" + (i + 1))
+        //         .then(x => x.text())
+        //         .then(x => {
+        //             return x;
+        //         })
+        // }
+        // //ASYNC/AWAIT
+        // async function asincrona12() { //la funcion debe ser async para usar await
+        //     const f = await fetch("https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num=" + (i + 1))
+        //     const ftext = await f.text();
+        //     return ftext; //aqui no se puede poner await
+        // }//como el f.text espera una promesa, usamos await, y ponemos tantos como then pusimos antes
+
+
+
+        async function init() {
+            // asincrona1().then(response => {
+            //     console.log("FETCH", resposta);
+            // });
+
+            // asincrona12().then(response => {
+            //     console.log("Async/Await", resposta);
+            // });
+
+            // const resposta = await asincron2();
+            // console.log(resposta);
+
+
+            /*
+            for (let i = 0; i < 10; i++) {
+                const f = await fetch("https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num=" + (i + 1))
+                const ftext = await f.text();
+                document.querySelector('#app').innerHTML += '<p>' + ftext + '</p>'
+            }
+            */
+            //solucion, con una array de promesas
+            const promises = [];
+
+            for (let i = 0; i < 10; i++) {
+                const promise = await fetch("https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num=" + (i + 1))
+                    .then(x => x.text())
+                promises.push(promise);
+
+            }
+            //importante, los await no estan en los bucles
+            const resultados = await Promise.all(promises);
+
+            for (const r of resultados) {
+                document.querySelector('#app').innerHTML += '<p>' + r + '</p>'
+            }
+
+        }
+       (async ()=>await init())();
+
+
+    </script>
+</body>
+
+</html>

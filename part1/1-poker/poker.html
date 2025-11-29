@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Poker</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        function pintarPoker(externalWindow) {
+
+
+            //Pintam
+            const app = document.querySelector("#app");
+
+            app.innerHTML += "<button onclick=\"externalWindow= openWindow()\">Play!</button>";
+            app.innerHTML += "<button onclick=\"closeWindow(externalWindow)\">Tancar</button>";
+
+        }
+
+        function openWindow() {
+            return window.open("./joc.html", "_blank", "height=300,width=800");
+
+        }
+
+        function closeWindow() {
+            if (externalWindow) {
+                externalWindow.close()
+            }
+        }
+        function init() {
+            let externalWindow;
+            pintarPoker(externalWindow);
+        }
+
+    </script>
+
+</body>
+
+</html>

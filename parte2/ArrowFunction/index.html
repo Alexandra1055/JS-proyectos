@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="boton1">Click boton 1</button>
+    <button id="boton2">Click boton 2</button>
+
+    <script>
+
+        //Regular -> INSTANCIA
+        document.querySelector('#boton1').addEventListener('click', function(){
+            console.log(this);
+            this.style.backgroundColor='red';
+        })
+
+        //ARROW -> DEFINICION
+        document.querySelector('#boton2').addEventListener('click', ()=>{
+            console.log(this);
+            this.style.backgroundColor='blue';
+        })
+
+    function Persona(nombre, apellidos){
+        this.nombre=nombre;
+        this.apellidos=apellidos;
+        this.nombreCompleto = function(){
+            return "Regular: "+ this.nombre + " " + this.apellidos;
+        }
+        this.nombreCompleto2= ()=> "ARROW: " + this.nombre + " " + this.apellidos;
+    }
+
+
+
+    const tomeu= new Persona("Tomeu", "Brunet")
+    console.log("Nombre Completo", tomeu.nombre, tomeu.apellidos,tomeu.nombreCompleto);
+    console.log("Nombre Completo", tomeu.nombre, tomeu.apellidos,tomeu.nombreCompleto2);
+
+    //const nombreCompletoRegular = tomeu.nombreCompleto
+    
+    const nombreCompletoRegular= tomeu.nombreCompleto;
+
+    //Aqui this es undefined porque this es de windows no de la persona
+    //Como windows es modificables, podriamos poner: window.variable
+    window.nombre= 'Pep'
+    const nombreCompletoRegular2 = function(){
+        console.log("REGULAR 2 THIS: ", this)
+        return "REGULAR 2 "+ this.nombre + " " + this.apellidos;
+    }.bind(tomeu); //con el bind le puede inyectar a la funcion lo que quiero que apunte
+
+    console.log("Nombre Completo 4", nombreCompletoRegular2)
+
+    const nombreCompletoArrow= tomeu.nombreCompleto2;
+
+    console.log("Nombre Completo 3", nombreCompletoArrow, nombreCompletoRegular)
+    </script>
+</body>
+</html>

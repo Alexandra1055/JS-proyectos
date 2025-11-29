@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body id="app">
+    <p>Nombre: <span> Cargando...</span></p>
+    <p>Apellidos: <span> Cargando...</span></p>
+    <p>Email: <span> Cargando...</span></p>
+    <p>Genero: <span> Cargando...</span></p>
+    <!--
+Si es hombre: amarillo
+Si es mujer: naranja
+
+Ademas, debe salir la palabra "Marculino" si es "male"
+y "Femenino" si es "female"
+-->
+<!-- <script src="../ex2-import-export/model/models.js"></script>
+<script src="../ex2-import-export/service/services.js"></script>
+<script src="../ex2-import-export/view/views.js"></script> -->
+
+    <script type="module">
+        import {getPersona} from '../ex2-import-export/service/services.js';
+        import {paintResult} from '../ex2-import-export/view/views.js';
+
+        function init() {
+           getPersona().then(function(persona){
+                paintResult(persona);
+           });
+        }
+        init();
+    </script>
+</body>
+
+</html>

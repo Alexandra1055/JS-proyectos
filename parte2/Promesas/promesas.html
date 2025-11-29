@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let global = 10;
+        function getRndInteger(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        function prueba(time) {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    const r = getRndInteger(1, 10);
+                    global = 0;
+                    if (r % 2 === 0) {
+                        resolve("Hola");
+                    } else {
+                        reject("Adios");
+                    }
+
+                }, time)
+            }).then(function (resultat) {
+                console.log("Resultat OK: ", resultat);
+            }).catch(function (resultat) {
+                console.log("Resultat KO: ", resultat);
+            });
+        }
+
+        prueba(5000);
+        prueba(1000);
+        prueba(7000);
+        prueba(2000);
+        console.log(global);
+    </script>
+</body>
+
+</html>

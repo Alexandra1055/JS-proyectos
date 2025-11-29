@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+       /*
+        const x = 4;
+        console.log(x);
+        */
+
+    // x = 3; esto daria error porque es una constante
+    // console.log(x);  hasta aqui se ejecuta, aparecera el 4 pero despues peta, y da error
+
+    /*
+    if (1==2){
+        x=3;
+    }
+    console.log(x); //ahora si se imprimiria porque nunca entra en el if
+    */
+   
+    // una linea de comenari o
+    /*
+    Para mas de una linea de comentarios
+    */
+    // Ejemplos con los tipos de variables
+    // String
+    const a = "Hola";
+    const b = 'Hola';
+    //Template strings
+    const c = `que tal?`; //La diferencia depende de como concatenamos los valores de dentro
+    
+    //Concatenaciones
+    const d = a + ' ' + b  + "!!!";
+    const e = `${a} ${b}!!!`; //Las dos variables, d y e diran lo mismo, se usa para que sea la leible y se mas flexibles
+    /* ejemplo de felixibilidad: const e = `${a.toUpperCase} ${b}!!!`;
+    Ademas las Template String permite saltos de linea 
+    EJ: const f = "Hola que" +
+                    "tal estas?";
+        const g = `Hola que
+                    tal estas?`; //tambien podemos usar \t para tabular
+    */
+
+    //NUMBERS
+    /*
+    const x = 4;
+    const y = 4.5;
+    const z = "4";
+
+
+    + - * / % ^
+    < > <= >= 
+    == ===
+    != !==
+    ++ --
+    && ||
+   
+    x + y
+    x + y + z
+    x - y
+    x - y - z
+    x == z
+    x === z
+    x != z
+    x !== z
+    x < y
+    y < z
+    */
+    const x = 4;
+    const y = 4.5;
+    const z = "4";
+
+    console.log(typeof x, typeof y, typeof z);
+
+    console.log("x + y =", x + y);
+
+    console.log("x + y + z =", x + y + z, typeof(x + y + z));
+    console.log("z + x + y =", z + x + y);
+
+    console.log("x - y =", x - y);
+
+    console.log("x - y - z =", x - y - z);
+
+    console.log("x == z =", x == z);
+
+    console.log("x === z =", x === z);
+
+    console.log("x != z =", x != z);
+
+    console.log("x !== z =", x !== z);
+
+    console.log("x < y =", x < y);
+
+    console.log("y < z =", y < z);
+
+
+    //objetos basicos (los objetos son prototipos)
+    const h={
+	nombre: 'Alexandra',
+    apellido: 'Gonzalez',
+	edad: 31,
+    ojos: 2
+};
+
+console.log(h.nombre, h.apellido);
+h.apellido2 = 'Broncano';
+console.log(h.nombre,h.apellido, h.apellido2);
+
+//alert("Hola")
+// window.alert = function(x){
+//     console.log("Hola "+ x);
+// }
+// alert("mmmm");
+
+
+//Arrays basicos
+    const i = ["Rosa","Josep","Cristian"];
+    //propiedades: length
+    i.length;
+    const j = i[2];
+    //introducir elementos
+    i.push("Sergio")
+    //borramos el ultimo elemento
+    i.pop();
+
+//Funciones: las funciones son valores!!!!!!!!!
+const k = function(){
+    return "Hola";
+}
+console.log(k,k());
+
+//2 tipos
+//- Funciones anonimas
+const anonima = function(){
+    return "funcion anonima";
+}
+
+//- Con nombre
+function suma(a, b){
+    return a + b;
+}
+
+
+
+    </script>
+</body>
+</html>
